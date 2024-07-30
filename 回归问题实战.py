@@ -32,19 +32,27 @@ def gradient_descent_runner(points, starting_b, starting_w, learning_rate, num_i
     b = starting_b
     w = starting_w
     for i in range(num_iterations):
-        b , m = step_gradient(b, m, np.array(points), learning_rate)
-    return [b, m]
+        b , w = step_gradient(b, w, np.array(points), learning_rate)
+    return [b, w]
+
+def generate_data(num_points):
+    np.random.seed(42)
+    x = 2 * np.random.rand(num_points,1)
+    y = 4 + 3 * x + np.random.randn(num_points, 1)
+    points = np.hstack((x,y))
+    return points
 
 def run():
-    points = np.genfromtxt("data.csv", delimiter=',')
+    # points = np.genfromtxt("data.csv", delimiter=',')
+    points = generate_data(100)
     learning_rate = 0.0001
     initial_b = 0
     initial_w = 0
-    num_iterations = 0
+    num_iterations = 100
     print("Starting gradient descent at b = {0}, m = {1}, error = {2}".format(initial_b,initial_w,compute_loss(initial_b,initial_w,points)))
     print("Runing....")
     [b , w] = gradient_descent_runner(points, initial_b, initial_w, learning_rate, num_iterations)
     print("After {0} iterations b = {1}, m = {2}, loss = {3}".format(num_iterations, b, w, compute_loss(b,w,points)))
 
-if __name__ == 'main':
+if __name__ == '__main__':
     run()
